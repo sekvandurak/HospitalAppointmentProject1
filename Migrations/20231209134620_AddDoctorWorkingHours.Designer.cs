@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HospitalAppointmentProject1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231209125930_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20231209134620_AddDoctorWorkingHours")]
+    partial class AddDoctorWorkingHours
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,6 +78,33 @@ namespace HospitalAppointmentProject1.Migrations
                     b.ToTable("Doctors");
                 });
 
+            modelBuilder.Entity("HospitalAppointmentProject1.Models.DoctorWorkingHours", b =>
+                {
+                    b.Property<int>("DoctorWorkingHoursId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DoctorWorkingHoursId"), 1L, 1);
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("DoctorWorkingHoursId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("DoctorWorkingHours");
+                });
+
             modelBuilder.Entity("HospitalAppointmentProject1.Models.Patient", b =>
                 {
                     b.Property<int>("PatientId")
@@ -117,9 +144,22 @@ namespace HospitalAppointmentProject1.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HospitalAppointmentProject1.Models.DoctorWorkingHours", b =>
+                {
+                    b.HasOne("HospitalAppointmentProject1.Models.Doctor", "Doctor")
+                        .WithMany("WorkingHours")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+                });
+
             modelBuilder.Entity("HospitalAppointmentProject1.Models.Doctor", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("WorkingHours");
                 });
 
             modelBuilder.Entity("HospitalAppointmentProject1.Models.Patient", b =>
