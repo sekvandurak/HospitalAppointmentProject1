@@ -19,9 +19,6 @@ namespace HospitalAppointmentProject1.Models
         public int PatientId { get; set; }
         public int DoctorId { get; set; }
 
-        // Navigation properties
-        public Patient Patient { get; set; }
-        public Doctor Doctor { get; set; }
 
 
 

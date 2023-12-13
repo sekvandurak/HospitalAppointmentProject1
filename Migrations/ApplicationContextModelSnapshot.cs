@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HospitalAppointmentProject1.Migrations
 {
-    [DbContext(typeof(ApplicationDbContext))]
+    [DbContext(typeof(ApplicationContext))]
     partial class ApplicationContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -71,40 +71,9 @@ namespace HospitalAppointmentProject1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("degree")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("DoctorId");
 
                     b.ToTable("Doctors");
-                });
-
-            modelBuilder.Entity("HospitalAppointmentProject1.Models.DoctorWorkingHours", b =>
-                {
-                    b.Property<int>("DoctorWorkingHoursId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DoctorWorkingHoursId"), 1L, 1);
-
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DoctorId")
-                        .HasColumnType("int");
-
-                    b.Property<TimeSpan>("EndTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time");
-
-                    b.HasKey("DoctorWorkingHoursId");
-
-                    b.HasIndex("DoctorId");
-
-                    b.ToTable("DoctorWorkingHours");
                 });
 
             modelBuilder.Entity("HospitalAppointmentProject1.Models.Patient", b =>
@@ -122,9 +91,6 @@ namespace HospitalAppointmentProject1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsAppointed")
-                        .HasColumnType("bit");
-
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -136,39 +102,22 @@ namespace HospitalAppointmentProject1.Migrations
 
             modelBuilder.Entity("HospitalAppointmentProject1.Models.Appointment", b =>
                 {
-                    b.HasOne("HospitalAppointmentProject1.Models.Doctor", "Doctor")
+                    b.HasOne("HospitalAppointmentProject1.Models.Doctor", null)
                         .WithMany("Appointments")
                         .HasForeignKey("DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HospitalAppointmentProject1.Models.Patient", "Patient")
+                    b.HasOne("HospitalAppointmentProject1.Models.Patient", null)
                         .WithMany("Appointments")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("HospitalAppointmentProject1.Models.DoctorWorkingHours", b =>
-                {
-                    b.HasOne("HospitalAppointmentProject1.Models.Doctor", "Doctor")
-                        .WithMany("WorkingHours")
-                        .HasForeignKey("DoctorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("HospitalAppointmentProject1.Models.Doctor", b =>
                 {
                     b.Navigation("Appointments");
-
-                    b.Navigation("WorkingHours");
                 });
 
             modelBuilder.Entity("HospitalAppointmentProject1.Models.Patient", b =>

@@ -7,20 +7,18 @@ namespace HospitalAppointmentProject1.Models
         public int PatientId { get; set; }
 
         [Required]
-        public string FirstName { get; set; } = string.Empty;
+        public string FirstName { get; set; }
 
         [Required]
-        public string LastName { get; set; } = string.Empty;
+        public string LastName { get; set; }
 
         [Required]
         [DataType(DataType.Date)]
         public DateTime DateOfBirth { get; set; }
 
-        public bool IsAppointed { get; set; }
-
         // Add other relevant properties such as address, contact information, etc.
 
         // Navigation property for appointments
-        public ICollection<Appointment>? Appointments { get; set; }
+        public ICollection<Appointment> Appointments { get; set; }
     }
 }
