@@ -5,7 +5,7 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HospitalAppointmentProject1", "HospitalAppointmentProject1.csproj", "{BE432799-58F7-4BED-AE25-CC47C82F29E7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "H3_2C", "..\..\..\OneDrive\Masaüstü\SAU DersNOTLARI\Web\Form Uygulamas Ornegi - Güncel\H3_2C\H3_2C\H3_2C.csproj", "{13AABE67-D5C0-4C47-A9E1-3723D5C5B38D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EfCore2C", "..\..\..\OneDrive\Masaüstü\SAU DersNOTLARI\Web\EfCore\EfCore2C\EfCore2C\EfCore2C.csproj", "{C1193580-0E83-4B8F-9CC1-F0E61DC7A628}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{BE432799-58F7-4BED-AE25-CC47C82F29E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE432799-58F7-4BED-AE25-CC47C82F29E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE432799-58F7-4BED-AE25-CC47C82F29E7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13AABE67-D5C0-4C47-A9E1-3723D5C5B38D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13AABE67-D5C0-4C47-A9E1-3723D5C5B38D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13AABE67-D5C0-4C47-A9E1-3723D5C5B38D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13AABE67-D5C0-4C47-A9E1-3723D5C5B38D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C1193580-0E83-4B8F-9CC1-F0E61DC7A628}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C1193580-0E83-4B8F-9CC1-F0E61DC7A628}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C1193580-0E83-4B8F-9CC1-F0E61DC7A628}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C1193580-0E83-4B8F-9CC1-F0E61DC7A628}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

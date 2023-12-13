@@ -1,0 +1,10 @@
+﻿@model Doctor
+
+<h1>Working Hours for @Model.FirstName @Model.LastName</h1>
+
+<ul>
+    @foreach (var workingHours in Model.WorkingHours)
+    {
+        <li>@workingHours.DayOfWeek: @workingHours.StartTime - @workingHours.EndTime</li>
+    }
+</ul>
