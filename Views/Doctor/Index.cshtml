@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Doctor>
+
+
+
+<h1>Mevcut Doktorlarimiz</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-secondary">Doktor Ekle</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DoctorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Specialty)
+            </th>
+            <th style="width:240px"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DoctorId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Specialty)
+                <td>
+                    <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.DoctorId">Edit</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.DoctorId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

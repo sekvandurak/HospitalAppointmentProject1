@@ -8,7 +8,7 @@ namespace HospitalAppointmentProject1.Models
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<DoctorWorkingHours> DoctorWorkingHours { get; set; } // Add this line
-
+        public DbSet<User> Users { get; set; }
 
         //MsSql server
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

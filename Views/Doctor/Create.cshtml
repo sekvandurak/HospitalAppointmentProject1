@@ -1,0 +1,25 @@
+﻿@model Doctor
+
+<h1>Doktor Ekle</h1>
+<hr />
+
+<form asp-controller="Doctor" asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="FirstName" class="form-label">Ad</label>
+        <input asp-for="FirstName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="LastName" class="form-label">Soyadı</label>
+        <input asp-for="LastName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Specialty" class="form-label">Uzmanlık Alanı</label>
+        <input asp-for="Specialty" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Degree" class="form-label">Ünvanı</label>
+        <input asp-for="Degree" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-secondary">Kaydet</button>
+
+</form>

@@ -15,6 +15,9 @@ namespace HospitalAppointmentProject1.Models
         [DataType(DataType.DateTime)]
         public DateTime EndTime { get; set; }
 
+        public DateTime SelectedTimeSlot { get; set; }
+        public string Major { get; set; }
+
         // Foreign keys
         public int PatientId { get; set; }
         public int DoctorId { get; set; }
