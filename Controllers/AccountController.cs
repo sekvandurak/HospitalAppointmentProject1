@@ -5,8 +5,11 @@ namespace HospitalAppointmentProject1.Controllers
 {
     public class AccountController : Controller
     {
-        private ApplicationDbContext _context = new ApplicationDbContext();
-        //signup
+        private readonly ApplicationDbContext _context;
+        public AccountController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public IActionResult SignUp(User user)
         {
             if (!ModelState.IsValid)

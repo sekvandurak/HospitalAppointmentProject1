@@ -1,0 +1,9 @@
+@model Appointment
+
+
+<div>
+    <label for="SelectedTimeSlot">Select a time slot:</label>
+    <select asp-for="SelectedTimeSlot" asp-items="@(new SelectList(ViewBag.TimeSlots))">
+        <option value="">-- Select a time slot --</option>
+    </select>
+</div>

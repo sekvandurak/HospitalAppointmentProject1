@@ -1,9 +1,24 @@
+using HospitalAppointmentProject1.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+/*
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    {
+        var config = builder.Configuration;
+        var connectionString = config.GetConnectionString("DefaultConnection");
+        options.UseSqlServer(connectionString);
+    });
+*/
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(connectionString));
 
 
 

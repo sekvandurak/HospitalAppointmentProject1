@@ -7,8 +7,14 @@ namespace HospitalAppointmentProject1.Controllers
     public class AppointmentController : Controller
     {
 
-        private ApplicationDbContext _context = new ApplicationDbContext();
+        // private ApplicationDbContext _context = new ApplicationDbContext();
 
+
+        private readonly ApplicationDbContext _context;
+        public AppointmentController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
 
         public IActionResult ScheduleAppointment()

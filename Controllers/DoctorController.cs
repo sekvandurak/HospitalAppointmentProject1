@@ -7,8 +7,12 @@ namespace HospitalAppointmentProject1.Controllers
     public class DoctorController : Controller
     {
 
-
-        private ApplicationDbContext _context = new ApplicationDbContext();
+        private readonly ApplicationDbContext _context;
+        //private ApplicationDbContext _context = new ApplicationDbContext();
+        public DoctorController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
 
         public IActionResult Index()
         {
