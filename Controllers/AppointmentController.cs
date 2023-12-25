@@ -1,5 +1,8 @@
 using HospitalAppointmentProject1.Models;
+using HospitalAppointmentProject1.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace HospitalAppointmentProject1.Controllers
@@ -15,22 +18,6 @@ namespace HospitalAppointmentProject1.Controllers
         {
             _context = context;
         }
-
-
-        public IActionResult ScheduleAppointment()
-        {
-            // Example: Generate time slots for a specific date
-            DateTime date = DateTime.Now.Date; // Replace with the desired date
-            List<DateTime> timeSlots = GenerateTimeSlots(date);
-
-            // Pass the generated time slots to the view
-            ViewBag.TimeSlots = timeSlots;
-
-
-
-            return View();
-        }
-
         public static List<DateTime> GenerateTimeSlots(DateTime date)
         {
             // Define working hours and break time
@@ -66,38 +53,57 @@ namespace HospitalAppointmentProject1.Controllers
             DateTime date = DateTime.Now.Date; // Replace with the desired date
             List<DateTime> timeSlots = GenerateTimeSlots(date);
 
-            // Pass the generated time slots to the view
             ViewBag.TimeSlots = timeSlots;
+            ViewBag.Specialties = _context.Doctors.Select(d => d.Specialty).Distinct().ToList();
 
-            var specialties = _context.Doctors.Select(d => d.Specialty).Distinct().ToList();
-            ViewBag.Specialties = specialties;
+            // Fetch the doctors from the database into memory
+            var doctors = _context.Doctors.ToList();
 
-            //doctor id's
-            var doctors = _context.Doctors.Select(d => d.DoctorId).Distinct().ToList();
-            ViewBag.Doctors = doctors;
+            // Group doctors by specialty using LINQ to Objects
+            var doctorsGroupedBySpecialty = doctors
+                .GroupBy(d => d.Specialty)
+                .ToList(); // Execute the grouping in memory
 
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            ViewBag.PatientId = userId;
+            var doctorsBySpecialtyDictionary = doctorsGroupedBySpecialty
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(d => new SelectListItem { Value = d.DoctorId.ToString(), Text = d.FirstName }).ToList()
+                );
+
+            ViewBag.DoctorsBySpecialty = doctorsBySpecialtyDictionary;
+
+            ViewBag.UserId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             return View();
         }
-        public IActionResult SaveAppointment(Appointment appointment)
+        [HttpPost]
+        public async Task<IActionResult> CreateAppointment(AppointmentViewModel? model)
         {
-            appointment.PatientId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+
+
+            // UserId is valid, proceed with creating the Appointment
+            var appointment = new Appointment
+            {
+                StartTime = model.SelectedTimeSlot,
+                EndTime = model.SelectedTimeSlot?.AddMinutes(15),
+                SelectedTimeSlot = model.SelectedTimeSlot,
+                Major = model.Major,
+                UserId = model.UserId,
+                DoctorId = model.DoctorId
+            };
+
             _context.Appointments.Add(appointment);
+            await _context.SaveChangesAsync();
 
-            _context.SaveChanges();
             return RedirectToAction("AppointmentList");
-
         }
 
-        public IActionResult AppointmentList()
+
+
+        public async Task<IActionResult> AppointmentList()
         {
-            return View(_context.Appointments.ToList());
+            var appointmentList = await _context.Appointments.ToListAsync();
+            return View(appointmentList);
         }
-
-
-
-
 
     }
 

@@ -1,4 +1,4 @@
-﻿@model HospitalAppointmentProject1.Models.Appointment
+﻿@model IEnumerable<HospitalAppointmentProject1.Models.Appointment>
 
 @{
     ViewData["Title"] = "AppointmentList";
@@ -6,49 +6,58 @@
 
 <h1>AppointmentList</h1>
 
-<div>
-    <h4>Appointment</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndTime)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndTime)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SelectedTimeSlot)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SelectedTimeSlot)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Major)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Major)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Patient)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Patient.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Doctor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Doctor.FirstName)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.AppointmentId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SelectedTimeSlot)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Major)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DoctorId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserId)
+            </th>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.StartTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SelectedTimeSlot)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Major)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DoctorId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AppointmentId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AppointmentId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AppointmentId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

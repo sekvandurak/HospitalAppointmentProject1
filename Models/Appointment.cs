@@ -7,30 +7,25 @@ namespace HospitalAppointmentProject1.Models
         [Key]
         public int AppointmentId { get; set; }
 
-        [Required]
         [DataType(DataType.DateTime)]
-        public DateTime StartTime { get; set; }
+        public DateTime? StartTime { get; set; }
 
-        [Required]
+
         [DataType(DataType.DateTime)]
-        public DateTime EndTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
-        public DateTime SelectedTimeSlot { get; set; }
-        public string Major { get; set; }
+        public DateTime? SelectedTimeSlot { get; set; }
+        public string? Major { get; set; }
 
         // Foreign keys
-        public int PatientId { get; set; }
-        public int DoctorId { get; set; }
+        public string? UserId { get; set; }
+        public AppUser? User { get; set; }
 
         // Navigation properties
-        public Patient Patient { get; set; }
-        public Doctor Doctor { get; set; }
 
-
-
+        public int? DoctorId { get; set; }
+        public Doctor? Doctor { get; set; }
     }
-
-
 
 }
 

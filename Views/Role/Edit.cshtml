@@ -1,0 +1,44 @@
+﻿@model AppRole
+
+<h1>Edit Role</h1>
+<hr />
+<form asp-action="Edit" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+    </div> 
+    <button type="submit" class="btn btn-primary">Save</button>
+</form>
+<hr />
+<table class="table table-sm table-bordered">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th style="width:125px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in ViewBag.Users)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.FullName</td>
+                <td>@user.Email</td>
+                <td>
+                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                    <form method="post" asp-action="Delete" onsubmit="return confirm('Emin misiniz?')" style="display:inline-block">
+                        <input type="hidden" name="id" value="@user.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm" asp-action="Delete">Delete</button>
+                    </form>
+
+
+                </td>
+            </tr>
+
+        }
+    </tbody>
+
+</table>
