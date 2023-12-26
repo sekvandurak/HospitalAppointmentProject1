@@ -1,12 +1,14 @@
 ﻿using HospitalAppointmentProject1.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace HospitalAppointmentProject1.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class DoctorController : Controller
     {
-
         private readonly ApplicationDbContext _context;
         //private ApplicationDbContext _context = new ApplicationDbContext();
         public DoctorController(ApplicationDbContext context)
@@ -86,7 +88,7 @@ namespace HospitalAppointmentProject1.Controllers
             return RedirectToAction("Index", "Doctor");
         }
 
-        //Delete Ogrenci
+
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {

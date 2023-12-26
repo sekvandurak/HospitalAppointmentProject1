@@ -7,6 +7,6 @@
 
         // Foreign keys
         public string? UserId { get; set; }
-        public int? DoctorId { get; set; }
+        public int DoctorId { get; set; }
     }
 }

@@ -18,57 +18,72 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                      <ul class="navbar-nav flex-grow-1">
 
-
-
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Appointment" asp-action="CreateAppointment">Create Appointment</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Appointment" asp-action="AppointmentList">Appointment List</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Create">Create User</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Index">Doktorlar</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Create">Doktor Ekle</a>
-                        </li>
-
-
-
+                        @if (User.Identity.IsAuthenticated == true)
+                        {
+                            if (User.IsInRole("admin"))
+                            {
+                               <li class="nav-item">
+                                     <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">Users</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Index">Doktorlar</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Create">Doktor Ekle</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Appointment" asp-action="AppointmentList">Appointment List</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Appointment" asp-action="CreateAppointment">Create Appointment</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Create">Create User</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark">Merhaba, @User.Identity.Name</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                                </li>
+                            }
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Appointment" asp-action="MyAppointment">My Appointments</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Appointment" asp-action="CreateAppointment">Create Appointment</a>
+                                </li>
+                        }
+                      
                     </ul>
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <ul class="navbar-nav ms-auto">
+
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity.IsAuthenticated == true)
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark">Merhaba, @User.Identity.Name</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                             </li>
-                        </ul>
-                    }
-                    else
-                    {
-                        <ul class="navbar-nav ms-auto">
+                        }
+                        else
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Create">Register</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
                             </li>
-                        </ul>
-                    }
+                        }
+
+
+                    </ul>  
                 </div>
             </div>
         </nav>

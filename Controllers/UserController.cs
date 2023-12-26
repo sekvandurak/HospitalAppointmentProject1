@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HospitalAppointmentProject1.Controllers
 {
-
+    [Authorize(Roles = "Admin")]
     public class UserController : Controller
     {
         private UserManager<AppUser> _userManager;

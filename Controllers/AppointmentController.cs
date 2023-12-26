@@ -1,9 +1,11 @@
 using HospitalAppointmentProject1.Models;
 using HospitalAppointmentProject1.ViewModels;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+
 
 namespace HospitalAppointmentProject1.Controllers
 {
@@ -14,9 +16,11 @@ namespace HospitalAppointmentProject1.Controllers
 
 
         private readonly ApplicationDbContext _context;
-        public AppointmentController(ApplicationDbContext context)
+        private readonly UserManager<AppUser> _userManager;
+        public AppointmentController(ApplicationDbContext context, UserManager<AppUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         public static List<DateTime> GenerateTimeSlots(DateTime date)
         {
@@ -78,7 +82,18 @@ namespace HospitalAppointmentProject1.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAppointment(AppointmentViewModel? model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
 
+            bool isDoctorAvailable = await IsDoctorAvailable(model.DoctorId, model.SelectedTimeSlot);
+            if (!isDoctorAvailable)
+            {
+                // If the doctor is not available, add a model error and return the view
+                ModelState.AddModelError(string.Empty, "The selected doctor is not available at the chosen time slot.");
+                return View(model);
+            }
 
             // UserId is valid, proceed with creating the Appointment
             var appointment = new Appointment
@@ -96,14 +111,103 @@ namespace HospitalAppointmentProject1.Controllers
 
             return RedirectToAction("AppointmentList");
         }
+        private async Task<bool> IsDoctorAvailable(int doctorId, DateTime? selectedTimeSlot)
+        {
+            // Check if there are any overlapping appointments for the selected doctor at the chosen time slot
+            bool isAvailable = await _context.Appointments
+                .AnyAsync(a => a.DoctorId == doctorId &&
+                               a.StartTime <= selectedTimeSlot &&
+                               a.EndTime >= selectedTimeSlot);
 
+            return !isAvailable; // Return true if the doctor is available, false if not
+        }
 
 
         public async Task<IActionResult> AppointmentList()
         {
-            var appointmentList = await _context.Appointments.ToListAsync();
+            var appointmentList = await _context
+                .Appointments
+                .Include(a => a.Doctor) // Include the Doctor navigation property
+                .Include(a => a.User)
+                .ToListAsync();
             return View(appointmentList);
         }
+
+        public async Task<IActionResult> Edit(int AppointmentId)
+        {
+            if (AppointmentId == null)
+            {
+                return NotFound();
+            }
+            var appointment = await _context.Appointments.FirstOrDefaultAsync(a => a.AppointmentId == AppointmentId);
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return View(new Appointment
+                {
+                    StartTime = appointment.SelectedTimeSlot,
+                    EndTime = appointment.SelectedTimeSlot?.AddMinutes(15),
+                    SelectedTimeSlot = appointment.SelectedTimeSlot,
+                    Major = appointment.Major,
+                    UserId = appointment.UserId,
+                    DoctorId = appointment.DoctorId
+                });
+            }
+            return RedirectToAction("AppointmentList");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int AppointmentId, Appointment model)
+        {
+            if (AppointmentId != model.AppointmentId)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Appointments.Update(model);
+                    await _context.SaveChangesAsync();
+
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return NotFound();
+                }
+            }
+            return RedirectToAction("AppointmentList");
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int AppointmentId)
+        {
+            var appointment = await _context.Appointments.FindAsync(AppointmentId);
+            _context.Appointments.Remove(appointment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("AppointmentList");
+        }
+
+        public async Task<IActionResult> MyAppointment()
+        {
+            // current user id 
+            var userId = _userManager.GetUserId(User);
+
+            // Linq query to get the appointments of the current user
+            var userAppointments = await _context.Appointments
+                .Where(a => a.UserId == userId)
+                .Include(a => a.User) // Include the User navigation property
+                .Include(a => a.Doctor)
+                .ToListAsync();
+
+            return View(userAppointments);
+        }
+
+
 
     }
 
