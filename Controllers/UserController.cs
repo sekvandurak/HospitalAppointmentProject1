@@ -4,10 +4,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 namespace HospitalAppointmentProject1.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "admin")]
     public class UserController : Controller
     {
         private UserManager<AppUser> _userManager;
@@ -19,9 +20,13 @@ namespace HospitalAppointmentProject1.Controllers
             _roleManager = roleManager;
         }
         [AllowAnonymous]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var users = _userManager.Users;
+            List<AppUser> users = new List<AppUser>();
+            HttpClient client = new HttpClient();
+            var response = await client.GetAsync("https://localhost:7277/api/UsersApi");
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            users = JsonConvert.DeserializeObject<List<AppUser>>(jsonResponse);
             return View(users);
         }
 

@@ -1,5 +1,6 @@
 ﻿using HospitalAppointmentProject1.Models;
 using HospitalAppointmentProject1.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -193,6 +194,13 @@ namespace HospitalAppointmentProject1.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
     }
 }

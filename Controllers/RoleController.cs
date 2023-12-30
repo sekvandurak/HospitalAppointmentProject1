@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAppointmentProject1.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     public class RoleController : Controller
     {
         private readonly RoleManager<AppRole> _roleManager;
@@ -16,6 +16,7 @@ namespace HospitalAppointmentProject1.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
+
         public IActionResult Index()
         {
             return View(_roleManager.Roles);

@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System.Data;
 
 namespace HospitalAppointmentProject1.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "admin")]
     public class DoctorController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -16,10 +17,23 @@ namespace HospitalAppointmentProject1.Controllers
             _context = context;
         }
 
+        /*
         public IActionResult Index()
         {
             List<Doctor>? doctors = _context.Doctors.ToList();
             return View(doctors);
+        }
+        */
+
+        public async Task<IActionResult> DoctorsList()
+        {
+            List<Doctor> doctorList = new List<Doctor>();
+            HttpClient client = new HttpClient();
+
+            var response = await client.GetAsync("https://localhost:7277/api/DoctorsApi");
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            doctorList = JsonConvert.DeserializeObject<List<Doctor>>(jsonResponse);
+            return View(doctorList);
         }
         public IActionResult DoctorsBySpecialty(string specialty)
         {

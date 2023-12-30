@@ -7,6 +7,10 @@ namespace HospitalAppointmentProject1.Models
         [Key]
         public int AppointmentId { get; set; }
 
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = false)]
+        public DateTime? Date { get; set; }
+
         [DataType(DataType.DateTime)]
         public DateTime? StartTime { get; set; }
 

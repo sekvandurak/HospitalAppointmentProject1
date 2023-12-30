@@ -1,24 +1,38 @@
 ﻿@model HospitalAppointmentProject1.ViewModels.LoginViewModel 
 
-<h1>Login</h1>
+@using Microsoft.AspNetCore.Mvc.Localization
+
+@inject IViewLocalizer Localizer
+
+<h1>@Localizer["title"]</h1>
 <hr />
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        @Localizer["SelectLanguage"]
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="?culture=en-US">@Localizer["English"]</a></li>
+        <li><a class="dropdown-item" href="?culture=tr-TR">@Localizer["Turkish"]</a></li>
+       
+    </ul>
+</div>
 <form asp-action="Login" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="mb-3">
-        <label asp-for="Email"></label>
+        <label class="form-check-label">@Localizer["Email"]</label>
         <input asp-for="Email" class="form-control" />
     </div>
     <div class="mb-3">
-        <label asp-for="Password"></label>
+        <label class="form-check-label">@Localizer["Password"]</label>
         <input asp-for="Password" class="form-control" />
     </div>
     <div class="mb-3">
+        <label class="form-check-label">@Localizer["RememberMe"]</label>
         <input asp-for="RememberMe" class="form-check-input" />
-        <label asp-for="RememberMe" class="form-check-label"></label>
     </div>
 
-    <button type="submit" class="btn btn-primary">Login</button>
-    <a class="btn btn-warning" asp-action="ForgetPassword">Sifremi Unuttum</a>
+    <button type="submit" class="btn btn-primary">@Localizer["submit"]</button>
+    <a class="btn btn-warning">@Localizer["ForgetPassword"]</a>
 
 </form>
 
