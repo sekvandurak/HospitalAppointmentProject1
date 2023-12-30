@@ -1,13 +1,16 @@
 using HospitalAppointmentProject1.Models;
 using HospitalAppointmentProject1.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Security.Claims;
 
 namespace HospitalAppointmentProject1.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AppointmentController : Controller
     {
         // private ApplicationDbContext _context = new ApplicationDbContext();
@@ -50,7 +53,7 @@ namespace HospitalAppointmentProject1.Controllers
 
             return timeSlots;
         }
-
+        [AllowAnonymous]
         public IActionResult CreateAppointment()
         {
             DateTime date = DateTime.Now.Date; // Replace with the desired date
@@ -90,6 +93,7 @@ namespace HospitalAppointmentProject1.Controllers
             return !isAvailable; // Return true if the doctor is available, false if not
         }
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateAppointment(AppointmentViewModel? model)
         {
             if (!ModelState.IsValid)
@@ -123,43 +127,78 @@ namespace HospitalAppointmentProject1.Controllers
             return RedirectToAction("MyAppointment");
         }
 
-
-        public async Task<IActionResult> Edit(int? AppointmentId)
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Edit(int AppointmentId)
         {
-            if (AppointmentId == null)
+            if (AppointmentId == 0)
             {
                 return NotFound();
             }
-            var appointment = await _context.Appointments.FirstOrDefaultAsync(a => a.AppointmentId == AppointmentId);
+            var appointment = await _context.Appointments.FindAsync(AppointmentId);
             if (appointment == null)
             {
                 return NotFound();
             }
+            ViewBag.Specialties = _context.Doctors.Select(d => d.Specialty).Distinct().ToList();
+            var doctors = _context.Doctors.ToList();
+
+            // Group doctors by specialty using LINQ to Objects
+            var doctorsGroupedBySpecialty = doctors
+                .GroupBy(d => d.Specialty)
+                .ToList(); // Execute the grouping in memory
+
+            var doctorsBySpecialtyDictionary = doctorsGroupedBySpecialty
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(d => new SelectListItem { Value = d.DoctorId.ToString(), Text = d.FirstName }).ToList()
+                );
+
+            ViewBag.DoctorsBySpecialty = doctorsBySpecialtyDictionary;
+
+            DateTime date = DateTime.Now.Date; // Replace with the desired date
+            List<TimeSpan> timeSlots = GenerateTimeSlots(date);
+
+            ViewBag.TimeSlots = timeSlots;
             var appointmentModel = new AppointmentViewModel
             {
+                AppointmentId = appointment.AppointmentId,
                 Major = appointment.Major,
+                DoctorId = (int)appointment.DoctorId,
                 SelectedTimeSlot = appointment.SelectedTimeSlot,
                 UserId = appointment.UserId,
-                DoctorId = (int)appointment.DoctorId,
                 Date = appointment.Date
             };
-
             return View(appointmentModel);
 
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string userId, Appointment model)
+        [AllowAnonymous]
+        public async Task<IActionResult> Edit(int appointmentId, AppointmentViewModel model)
         {
-            if (userId.Equals(model.UserId))
+            var userId = _userManager.GetUserId(User);
+
+            if (appointmentId != model.AppointmentId)
             {
                 return NotFound();
             }
+
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Appointments.Update(model);
+                    var appointment = await _context.Appointments.FindAsync(appointmentId);
+                    appointment.Major = model.Major;
+                    appointment.Date = model.Date;
+                    appointment.SelectedTimeSlot = model.SelectedTimeSlot;
+                    appointment.StartTime = model.SelectedTimeSlot;
+                    appointment.EndTime = model.SelectedTimeSlot?.AddMinutes(15);
+                    appointment.DoctorId = model.DoctorId;
+                    appointment.UserId = userId;
+                    appointment.AppointmentId = model.AppointmentId;
+                    appointment.DoctorId = model.DoctorId;
+                    _context.Appointments.Update(appointment);
                     await _context.SaveChangesAsync();
 
                 }
@@ -168,11 +207,12 @@ namespace HospitalAppointmentProject1.Controllers
                     return NotFound();
                 }
             }
-            return RedirectToAction("AppointmentList");
+            return RedirectToAction("MyAppointment");
         }
 
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Delete(int AppointmentId)
         {
             var appointment = await _context.Appointments.FindAsync(AppointmentId);
@@ -180,7 +220,7 @@ namespace HospitalAppointmentProject1.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction("AppointmentList");
         }
-
+        [AllowAnonymous]
         public async Task<IActionResult> MyAppointment()
         {
             // current user id 

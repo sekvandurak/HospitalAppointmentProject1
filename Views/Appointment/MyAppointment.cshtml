@@ -17,9 +17,6 @@
                 @Html.DisplayNameFor(model => model.EndTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SelectedTimeSlot)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Major)
             </th>
             <th>
@@ -50,9 +47,6 @@
                 @Html.DisplayFor(modelItem => item.EndTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SelectedTimeSlot)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Major)
             </td>
             <td>
@@ -71,7 +65,12 @@
                 @item.Doctor?.FirstName
             </td>
             <td>
-                <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.AppointmentId">Edit</a>
+                <form method="get" asp-action="Edit">
+                    <input type="hidden" name="AppointmentId" value="@item.AppointmentId" />
+                    <input type="hidden" name="UserId" value="" />
+                    <button type="submit" class="btn btn-primary btn-sm" asp-action="Edit">Edit</button>
+                </form>
+              
                 <form method="post" asp-action="Delete" onsubmit="return confirm('Emin misiniz?')" style="display:inline-block">
                     <input type="hidden" name="AppointmentId" value="@item.AppointmentId" />
                     <button type="submit" class="btn btn-danger btn-sm" asp-action="Delete">Delete</button>

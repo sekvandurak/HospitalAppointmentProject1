@@ -12,14 +12,19 @@ namespace HospitalAppointmentProject1.Models
         public DateTime? Date { get; set; }
 
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime? StartTime { get; set; }
 
 
         [DataType(DataType.DateTime)]
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime? EndTime { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:HH:mm}", ApplyFormatInEditMode = false)]
         public DateTime? SelectedTimeSlot { get; set; }
         public string? Major { get; set; }
+
+
 
         // Foreign keys
         public string? UserId { get; set; }

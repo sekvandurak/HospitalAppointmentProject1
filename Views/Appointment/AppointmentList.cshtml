@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HospitalAppointmentProject1.Models.Appointment>
+﻿@model IEnumerable<Appointment>
 
 @{
     ViewData["Title"] = "AppointmentList";
@@ -73,7 +73,11 @@
                 </td>
 
                 <td>
-                    <a class="btn btn-primary btn-sm" asp-action="Edit" asp-route-id="@item.AppointmentId">Edit</a>
+                    <form method="get" asp-action="Edit">
+                        <input type="hidden" name="AppointmentId" value="@item.AppointmentId" />
+                        <button type="submit" class="btn btn-primary btn-sm" asp-action="Edit">Edit</button>
+                    </form>
+                    @*<a class="btn btn-primary" asp-controller="Appointment" asp-action="Edit" asp-route-id="@item.AppointmentId">Edit</a>*@
                     <form method="post" asp-action="Delete" onsubmit="return confirm('Emin misiniz?')" style="display:inline-block">
                         <input type="hidden" name="AppointmentId" value="@item.AppointmentId" />
                         <button type="submit" class="btn btn-danger btn-sm" asp-action="Delete">Delete</button>
