@@ -52,7 +52,7 @@ namespace HospitalAppointmentProject1.Controllers
         {
             _context.Doctors.Add(model);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "Doctor");
+            return RedirectToAction("DoctorsList");
         }
 
         //Edit Ogrenci
@@ -99,14 +99,14 @@ namespace HospitalAppointmentProject1.Controllers
                     return NotFound();
                 }
             }
-            return RedirectToAction("Index", "Doctor");
+            return RedirectToAction("DoctorsList");
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (id == 0)
             {
                 return NotFound();
             }
@@ -138,7 +138,7 @@ namespace HospitalAppointmentProject1.Controllers
                     return NotFound();
                 }
             }
-            return RedirectToAction("Index", "Doctor");
+            return RedirectToAction("DoctorsList");
         }
 
 

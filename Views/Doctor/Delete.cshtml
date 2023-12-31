@@ -4,12 +4,12 @@
     ViewBag.Title = "Delete";
 }
 <p>
-    <b>@Model.FirstName </b> isimli doctoru silmek istediğinize emin misiniz?
+    Are you sure to delete <b>@Model.FirstName @Model.LastName </b>?
     <br />
 
     <form asp-action="Delete" method="post">
         <input type="hidden" asp-for="DoctorId" />
-        <button type="submit" class="btn btn-danger">Evet</button>
-        <a asp-action="Index" class="btn btn-primary">Hayir</a>
+        <button type="submit" class="btn btn-danger">Yes</button>
+        <a asp-action="DoctorsList" class="btn btn-primary">No</a>
     </form>
 </p>

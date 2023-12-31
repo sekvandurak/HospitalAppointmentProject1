@@ -10,7 +10,7 @@ using System.Security.Claims;
 
 namespace HospitalAppointmentProject1.Controllers
 {
-    [Authorize(Roles = "admin")]
+
     public class AppointmentController : Controller
     {
         // private ApplicationDbContext _context = new ApplicationDbContext();
@@ -53,7 +53,7 @@ namespace HospitalAppointmentProject1.Controllers
 
             return timeSlots;
         }
-        [AllowAnonymous]
+
         public IActionResult CreateAppointment()
         {
             DateTime date = DateTime.Now.Date; // Replace with the desired date
@@ -92,8 +92,8 @@ namespace HospitalAppointmentProject1.Controllers
 
             return !isAvailable; // Return true if the doctor is available, false if not
         }
+
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> CreateAppointment(AppointmentViewModel? model)
         {
             if (!ModelState.IsValid)
@@ -127,8 +127,6 @@ namespace HospitalAppointmentProject1.Controllers
             return RedirectToAction("MyAppointment");
         }
 
-        [HttpGet]
-        [AllowAnonymous]
         public async Task<IActionResult> Edit(int AppointmentId)
         {
             if (AppointmentId == 0)
@@ -170,11 +168,9 @@ namespace HospitalAppointmentProject1.Controllers
                 Date = appointment.Date
             };
             return View(appointmentModel);
-
         }
-
         [HttpPost]
-        [AllowAnonymous]
+
         public async Task<IActionResult> Edit(int appointmentId, AppointmentViewModel model)
         {
             var userId = _userManager.GetUserId(User);
@@ -211,16 +207,20 @@ namespace HospitalAppointmentProject1.Controllers
         }
 
 
-        [HttpPost]
-        [AllowAnonymous]
+
         public async Task<IActionResult> Delete(int AppointmentId)
         {
             var appointment = await _context.Appointments.FindAsync(AppointmentId);
             _context.Appointments.Remove(appointment);
             await _context.SaveChangesAsync();
-            return RedirectToAction("AppointmentList");
+            if (User.IsInRole("admin"))
+            {
+                return RedirectToAction("AppointmentList");
+            }
+            return RedirectToAction("MyAppointment");
+
         }
-        [AllowAnonymous]
+
         public async Task<IActionResult> MyAppointment()
         {
             // current user id 
@@ -234,6 +234,7 @@ namespace HospitalAppointmentProject1.Controllers
 
             return View(userAppointments);
         }
+        [Authorize(Policy = "AdminOnly")]
         public async Task<IActionResult> AppointmentList()
         {
             var appointmentList = await _context
@@ -243,8 +244,6 @@ namespace HospitalAppointmentProject1.Controllers
                 .ToListAsync();
             return View(appointmentList);
         }
-
-
 
     }
 

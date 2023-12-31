@@ -17,9 +17,6 @@
                 @Html.DisplayNameFor(model => model.EndTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SelectedTimeSlot)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Major)
             </th>
             <th>
@@ -51,9 +48,6 @@
                     @Html.DisplayFor(modelItem => item.EndTime)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SelectedTimeSlot)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Major)
                 </td>
                 <td>
@@ -66,7 +60,7 @@
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
                 <td>
-                    @item.Doctor?.FirstName
+                    @item.Doctor?.FirstName @item.Doctor?.LastName
                 </td>
                 <td>
                     @item.User?.FullName

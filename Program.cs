@@ -19,6 +19,12 @@ builder.Services.AddScoped<IEmailSender, SmtpEmailSender>(i =>
 builder.Services.AddControllersWithViews()
     .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("admin"));
+});
+
 
 builder.Services.AddLocalization(options =>
 {
