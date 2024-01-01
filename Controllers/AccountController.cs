@@ -1,12 +1,11 @@
 ﻿using HospitalAppointmentProject1.Models;
 using HospitalAppointmentProject1.ViewModels;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HospitalAppointmentProject1.Controllers
 {
-    [Authorize(Roles = "admin")]
+
 
     public class AccountController : Controller
     {
@@ -21,13 +20,13 @@ namespace HospitalAppointmentProject1.Controllers
             _signInManager = signInManager;
             _emailSender = emailSender;
         }
-        [AllowAnonymous]
+
         public IActionResult Login()
         {
             return View();
         }
         [HttpPost]
-        [AllowAnonymous]
+
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
@@ -63,6 +62,7 @@ namespace HospitalAppointmentProject1.Controllers
             }
             return View(model);
         }
+
         public IActionResult Create()
         {
             return View();
@@ -98,7 +98,7 @@ namespace HospitalAppointmentProject1.Controllers
             }
             return View(model);
         }
-        [AllowAnonymous]
+
         public async Task<IActionResult> ConfirmEmail(string Id, string token)
         {
             if (Id == null || token == null)
@@ -121,7 +121,7 @@ namespace HospitalAppointmentProject1.Controllers
             return View();
 
         }
-        [AllowAnonymous]
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -133,7 +133,6 @@ namespace HospitalAppointmentProject1.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> ForgetPassword(string Email)
         {
             if (string.IsNullOrEmpty(Email))
@@ -157,7 +156,6 @@ namespace HospitalAppointmentProject1.Controllers
             return View();
         }
 
-        [AllowAnonymous]
         public IActionResult ResetPassword(string id, string token)
         {
             if (id == null || token == null)
@@ -171,7 +169,6 @@ namespace HospitalAppointmentProject1.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
         public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
         {
             if (ModelState.IsValid)
@@ -201,7 +198,6 @@ namespace HospitalAppointmentProject1.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public IActionResult AccessDenied()
         {
             return View();

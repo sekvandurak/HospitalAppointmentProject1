@@ -22,8 +22,8 @@
             <th>
                 @Html.DisplayNameFor(model => model.Specialty)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Degree)
+            <th style="width:240px">
+                Degree
             </th>
             <th style="width:240px"></th>
         </tr>
@@ -43,9 +43,10 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Specialty)
-                <td>
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Degree)
+                </td>
                 <td>
                     <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.DoctorId">Edit</a>
                     <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.DoctorId">Delete</a>

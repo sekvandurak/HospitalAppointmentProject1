@@ -69,7 +69,10 @@ namespace HospitalAppointmentProject1.Controllers
 
             //1 tane include ile KursKayitlarinin icine gittik. ama burada kursId var baslik yok
             // o zaman burdan 1 tane daha ardisik include yapmam lazim ic ice gibi
-            var doctor = await _context.Doctors.FirstOrDefaultAsync(o => o.DoctorId == id);
+            var doctor = await _context.Doctors
+                .Include(a => a.Appointments)
+                .ThenInclude(u => u.User)
+                .FirstOrDefaultAsync(o => o.DoctorId == id);
             if (doctor == null)
             {
                 return NotFound();

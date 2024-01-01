@@ -3,6 +3,7 @@
 <h1>Doktur Güncelle</h1>
 <hr />
 
+
 <div class="row">
     <div class="col-8">
         <form asp-controller="Doctor" asp-action="Edit" method="post">
@@ -27,6 +28,18 @@
 
         </form>
     </div>
-    
+    <div class="col-4">
+        <h4>Randevulu Hastalar</h4>
+        <hr />
+        <ul>
+            @foreach (var item in Model.Appointments)
+            { 
+                
+                <li>@item.User.FullName</li>
+            }
+        </ul>
+    </div>
+
+
 </div>
 
