@@ -1,3 +1,4 @@
+You can access project report by clicking https://docs.google.com/document/d/1Mj7l3DnvXhqCENQp2Z3PgJJUtjWbMIqS5mHb_Ee40Iw/edit
 
 ![WhatsApp Image 2024-01-22 at 15 08 26_00e3f0c2](https://github.com/sekvandurak/HospitalAppointmentProject1/assets/110340669/0c1f2e4e-0727-4f6d-8e89-dec6476c6218)
 ![WhatsApp Image 2024-01-22 at 15 08 38_5f476136](https://github.com/sekvandurak/HospitalAppointmentProject1/assets/110340669/837a647f-3404-4a99-8188-a5a9b7d59419)
